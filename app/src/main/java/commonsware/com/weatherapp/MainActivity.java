@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +29,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     TextView result;
     TextView celsiusText;
     DecimalFormat twoDigits = new DecimalFormat("#.##");
+    ImageView resultImage;
+
     public void findWeather(View view){
         EditText cityInput = (EditText)findViewById(R.id.cityInput);
         String cityName = null;
@@ -51,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
             DownloadTask downloadTask = new DownloadTask();
             downloadTask.execute(url);
         } catch (UnsupportedEncodingException e) {
+
             Toast.makeText(getApplicationContext(), "Please enter a valid city", Toast.LENGTH_SHORT);
+            Log.i("NO Internet connection", "error");
         }
         Log.i("User input: ", cityName);
 
@@ -86,6 +93,29 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPostExecute(String value){
             super.onPostExecute(value);
+           /*
+            Map<String, String> mainDescription = new HashMap<>();
+            mainDescription.put("clear sky", "R.drawable.clear_sky");
+            mainDescription.put("few clouds", "R.drawable.few_clouds");
+            mainDescription.put("scattered clouds", "R.drawable.scattered_clouds");
+            mainDescription.put("broken clouds", "R.drawable.broken_clouds");
+            mainDescription.put("shower rain", "R.drawable.shower_rain");
+            mainDescription.put("rain", "R.drawable.rain");
+            mainDescription.put("thunderstorm", "R.drawable.thunderstorm");
+            mainDescription.put("snow", "R.drawable.snow");
+            mainDescription.put("mist", "R.drawable.mist");
+            */
+            Map<String, Integer> mainDescription = new HashMap<>();
+            mainDescription.put("clear sky", R.drawable.clear_sky);
+            mainDescription.put("few clouds", R.drawable.few_clouds);
+            mainDescription.put("scattered clouds", R.drawable.scattered_clouds);
+            mainDescription.put("broken clouds", R.drawable.broken_clouds);
+            mainDescription.put("shower rain", R.drawable.shower_rain);
+            mainDescription.put("rain", R.drawable.rain);
+            mainDescription.put("light rain", R.drawable.shower_rain);
+            mainDescription.put("thunderstorm", R.drawable.thunderstorm);
+            mainDescription.put("snow", R.drawable.snow);
+            mainDescription.put("mist", R.drawable.mist);
             try {
                 String message = "";
                 Double celsiusValue = 0.0;
@@ -94,13 +124,23 @@ public class MainActivity extends AppCompatActivity {
                 String weatherInfo = jsonObject.getString("weather");
                 Log.i("Weather content", weatherInfo + "");
                 JSONArray jsonArray = new JSONArray(weatherInfo);
-                for (int i = 0; i < jsonArray.length(); i++){
+                String city = jsonObject.getString("name");
+                Log.i("City: ", city);
+                //for (int i = 0; i < jsonArray.length(); i++){
+                for (int i = 0; i < 1; i++){
                     JSONObject jsonPart = jsonArray.getJSONObject(i);
 
                     String main = jsonPart.getString("main");
                     String description = jsonPart.getString("description");
-                    if (!main.equals("") && !description.equals(""))
-                        message += main + ": " + description + "\n";
+                    if (!main.equals("") && !description.equals("")) {
+                        message += city + "\n$: " + description + "\n";
+                        int imageResourceName = 0;
+                        if (mainDescription.containsKey(description))
+                            imageResourceName = mainDescription.get(description);
+                        else
+                            imageResourceName = R.drawable.default_image;
+                        resultImage.setImageResource(imageResourceName);
+                    }
                 }
 
                 String temperatureInfo = jsonObject.getString("main");
@@ -143,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         });
         result = (TextView)findViewById(R.id.resultTextView);
         celsiusText = (TextView)findViewById(R.id.temperatureTextView);
+        resultImage = (ImageView)findViewById(R.id.resultImage);
     }
 
     @Override

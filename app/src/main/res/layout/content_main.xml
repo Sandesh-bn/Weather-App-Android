@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/weatherbackground"
+    android:background="@drawable/app_bg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="commonsware.com.weatherapp.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -20,16 +20,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
         android:id="@+id/textView"
-        android:textSize="28sp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/background_light" />
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:textColor="#fff"
         android:ems="10"
         android:id="@+id/cityInput"
         android:layout_below="@+id/textView"
@@ -37,7 +34,9 @@
         android:layout_alignParentStart="true"
         android:layout_marginLeft="23dp"
         android:layout_marginStart="23dp"
-        android:backgroundTint="@android:color/white" />
+        android:backgroundTint="@android:color/white"
+        android:selectAllOnFocus="true"
+        android:elevation="14dp" />
 
     <Button
         android:text="Get weather info"
@@ -47,7 +46,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:id="@+id/button"
-        android:onClick="findWeather" />
+        android:onClick="findWeather"
+        android:elevation="10dp"
+        style="@style/Widget.AppCompat.Button" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,6 +60,15 @@
         android:textSize="25sp"
         android:textColor="@android:color/background_light" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resultImage"
+        android:layout_alignTop="@+id/temperatureTextView"
+        android:layout_centerHorizontal="true"
+        android:scaleX="2"
+        android:scaleY="2" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,5 +77,7 @@
         android:layout_marginTop="31dp"
         android:id="@+id/temperatureTextView"
         android:textSize="80sp"
-        android:textColor="@android:color/background_light" />
+        android:textColor="@android:color/background_light"
+        android:typeface="normal" />
+
 </RelativeLayout>
