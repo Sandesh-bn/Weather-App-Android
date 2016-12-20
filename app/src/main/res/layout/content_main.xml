@@ -80,4 +80,14 @@
         android:textColor="@android:color/background_light"
         android:typeface="normal" />
 
+    <Button
+        android:text="Show more info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:onClick="showMoreInfo"
+        android:id="@+id/showMoreButton" />
+
 </RelativeLayout>

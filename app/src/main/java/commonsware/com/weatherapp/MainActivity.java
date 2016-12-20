@@ -1,6 +1,7 @@
 package commonsware.com.weatherapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +40,17 @@ public class MainActivity extends AppCompatActivity {
     DecimalFormat twoDigits = new DecimalFormat("#.##");
     ImageView resultImage;
 
+    public void showMoreInfo(View view){
+        Intent moreInfoIntent = new Intent(getApplicationContext(), moreInfoActivity.class);
+
+        ArrayList<String> dummyStringList = new ArrayList<>();
+        dummyStringList.add("first line");
+        dummyStringList.add("second line");
+        dummyStringList.add("third line");
+        moreInfoIntent.putStringArrayListExtra("moreInfo", dummyStringList);
+
+        startActivity(moreInfoIntent);
+    }
     public void findWeather(View view){
         EditText cityInput = (EditText)findViewById(R.id.cityInput);
         String cityName = null;
@@ -187,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         celsiusText = (TextView)findViewById(R.id.temperatureTextView);
         resultImage = (ImageView)findViewById(R.id.resultImage);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
