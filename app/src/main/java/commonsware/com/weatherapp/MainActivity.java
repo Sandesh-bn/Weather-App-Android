@@ -56,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
             DownloadTask downloadTask = new DownloadTask();
             downloadTask.execute(url);
         } catch (UnsupportedEncodingException e) {
-
+            Log.i("No connection 1", "No internet");
             Toast.makeText(getApplicationContext(), "Please enter a valid city", Toast.LENGTH_SHORT);
-            Log.i("NO Internet connection", "error");
+
+
         }
         Log.i("User input: ", cityName);
 
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... urls) {
-            StringBuilder result = new StringBuilder();
+            StringBuilder resultSb = new StringBuilder();
             URL url = null;
             HttpURLConnection connection = null;
             try {
@@ -80,12 +81,13 @@ public class MainActivity extends AppCompatActivity {
                 InputStreamReader reader = new InputStreamReader(is);
                 int data = reader.read();
                 while (data != -1){
-                    result.append((char)data);
+                    resultSb.append((char)data);
                     data = reader.read();
                 }
-                return result.toString();
+                return resultSb.toString();
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Please enter a valid city", Toast.LENGTH_SHORT).show();
+                Log.i("NO Internet 2", "error");// error is here
+                //Toast.makeText(MainActivity.this, "Please enter a valid city", Toast.LENGTH_SHORT).show();
 
             }
             return null;
