@@ -30,7 +30,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     TextView celsiusText;
     DecimalFormat twoDigits = new DecimalFormat("#.##");
     ImageView resultImage;
+    ArrayList<String> weatherInfoList = new ArrayList<>();
 
     public void showMoreInfo(View view){
         Intent moreInfoIntent = new Intent(getApplicationContext(), moreInfoActivity.class);
@@ -47,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         dummyStringList.add("first line");
         dummyStringList.add("second line");
         dummyStringList.add("third line");
-        moreInfoIntent.putStringArrayListExtra("moreInfo", dummyStringList);
+
+        moreInfoIntent.putStringArrayListExtra("moreInfo", weatherInfoList);
 
         startActivity(moreInfoIntent);
     }
@@ -108,18 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPostExecute(String value){
             super.onPostExecute(value);
-           /*
-            Map<String, String> mainDescription = new HashMap<>();
-            mainDescription.put("clear sky", "R.drawable.clear_sky");
-            mainDescription.put("few clouds", "R.drawable.few_clouds");
-            mainDescription.put("scattered clouds", "R.drawable.scattered_clouds");
-            mainDescription.put("broken clouds", "R.drawable.broken_clouds");
-            mainDescription.put("shower rain", "R.drawable.shower_rain");
-            mainDescription.put("rain", "R.drawable.rain");
-            mainDescription.put("thunderstorm", "R.drawable.thunderstorm");
-            mainDescription.put("snow", "R.drawable.snow");
-            mainDescription.put("mist", "R.drawable.mist");
-            */
+
             Map<String, Integer> mainDescription = new HashMap<>();
             mainDescription.put("clear sky", R.drawable.clear_sky);
             mainDescription.put("few clouds", R.drawable.few_clouds);
@@ -131,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             mainDescription.put("thunderstorm", R.drawable.thunderstorm);
             mainDescription.put("snow", R.drawable.snow);
             mainDescription.put("mist", R.drawable.mist);
+            weatherInfoList.clear();
             try {
                 String message = "";
                 Double celsiusValue = 0.0;
@@ -141,12 +135,16 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray jsonArray = new JSONArray(weatherInfo);
                 String city = jsonObject.getString("name");
                 Log.i("City: ", city);
+
+
                 //for (int i = 0; i < jsonArray.length(); i++){
                 for (int i = 0; i < 1; i++){
                     JSONObject jsonPart = jsonArray.getJSONObject(i);
 
                     String main = jsonPart.getString("main");
                     String description = jsonPart.getString("description");
+                    //weatherInfoList.add(main);
+                    weatherInfoList.add(description);
                     if (!main.equals("") && !description.equals("")) {
                         message += city + "\n$: " + description + "\n";
                         int imageResourceName = 0;
@@ -161,16 +159,45 @@ public class MainActivity extends AppCompatActivity {
                 String temperatureInfo = jsonObject.getString("main");
                 JSONObject tempObj = new JSONObject(temperatureInfo);
                 String kelvinString = tempObj.getString("temp");
+                String humidity = tempObj.getString("humidity");
+                String pressure = tempObj.getString("pressure");
+                String minTemperature = tempObj.getString("temp_min");
+                String maxTemperature = tempObj.getString("temp_max");
                 Log.i("TEMPERATURE: " , kelvinString);
                 celsiusValue = Double.parseDouble(kelvinString) - 273.15;
 
+                String countryInfo = jsonObject.getString("sys");
+                JSONObject countryObj = new JSONObject(countryInfo);
+                String country = countryObj.getString("country");
+                Log.i("Country: ", country );
+
+                String coordInfo = jsonObject.getString("coord");
+                JSONObject coordObj = new JSONObject(coordInfo);
+                String latitude = coordObj.getString("lat");
+                String longitude = coordObj.getString("lon");
+
+                String dateInfo = jsonObject.getString("dt");
+                Log.i("Date time", dateInfo);
+                Log.i("Local time", getLocalDate(dateInfo));
+
+                weatherInfoList.add(city);
+                weatherInfoList.add(country);
+                weatherInfoList.add(kelvinString);
+                weatherInfoList.add(latitude);
+                weatherInfoList.add(longitude);
+                weatherInfoList.add(minTemperature);
+                weatherInfoList.add(maxTemperature);
+                weatherInfoList.add(humidity);
+                weatherInfoList.add(pressure);
+                Log.i("list: ", weatherInfoList.toString());
 
 
                 if (message.equals(""))
                     Toast.makeText(getApplicationContext(), "Please enter a different city", Toast.LENGTH_SHORT).show();
                 else {
                     result.setText(message);
-                    celsiusText.setText(Html.fromHtml(twoDigits.format(celsiusValue) + "<sup><small>o</small></sup><small>c</small>"));
+                    celsiusText
+                            .setText(Html.fromHtml(twoDigits.format(celsiusValue) + "<sup><small>o</small></sup><small>c</small>"));
                 }
 
             } catch (JSONException e) {
@@ -180,6 +207,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public String getLocalDate(String epochTime){
+        Date UTCDate = new Date(Long.parseLong(epochTime));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy h:mm:ss a");
+        String result = "";
+        try {
+            //System.out.println("local format: " + simpleDateFormat.format(UTCDate));
+            //System.out.println("local Date: " + simpleDateFormat.parse(simpleDateFormat.format(UTCDate)));
+            result = String.valueOf(simpleDateFormat.parse(simpleDateFormat.format(UTCDate)));
+        } catch (Exception ex) {
+            result = "Date could not be calculated.";
+            //Log.i("INVALID DATE", "Date could not be calculated.");
+        }
+        return result;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

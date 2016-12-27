@@ -23,7 +23,9 @@
         <activity
             android:name=".moreInfoActivity"
             android:label="@string/title_activity_more_info"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
+            </activity>
     </application>
 
 </manifest>

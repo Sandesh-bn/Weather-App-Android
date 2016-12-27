@@ -15,42 +15,6 @@
     tools:showIn="@layout/activity_main">
 
     <TextView
-        android:text="Enter a city name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/cityInput"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:backgroundTint="@android:color/white"
-        android:selectAllOnFocus="true"
-        android:elevation="14dp" />
-
-    <Button
-        android:text="Get weather info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cityInput"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:id="@+id/button"
-        android:onClick="findWeather"
-        android:elevation="10dp"
-        style="@style/Widget.AppCompat.Button" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button"
@@ -89,5 +53,34 @@
         android:layout_alignEnd="@+id/textView"
         android:onClick="showMoreInfo"
         android:id="@+id/showMoreButton" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/cityInput"
+        android:backgroundTint="@android:color/white"
+        android:selectAllOnFocus="true"
+        android:hint="@string/city_input"
+        android:elevation="14dp"
+        android:layout_marginTop="86dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="57dp"
+        android:layout_marginStart="57dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:onClick="findWeather"
+        android:elevation="10dp"
+        style="@style/Widget.AppCompat.Button"
+        android:background="@android:drawable/ic_menu_search"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/cityInput"
+        android:layout_toRightOf="@+id/cityInput"
+        android:layout_toEndOf="@+id/cityInput" />
 
 </RelativeLayout>
