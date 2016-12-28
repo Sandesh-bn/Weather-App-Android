@@ -22,6 +22,7 @@
         android:layout_marginTop="184dp"
         android:id="@+id/resultTextView"
         android:textSize="25sp"
+        android:fontFamily="sans-serif-thin"
         android:textColor="@android:color/background_light" />
 
     <ImageView
@@ -42,17 +43,7 @@
         android:id="@+id/temperatureTextView"
         android:textSize="80sp"
         android:textColor="@android:color/background_light"
-        android:typeface="normal" />
-
-    <Button
-        android:text="Show more info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"
-        android:onClick="showMoreInfo"
-        android:id="@+id/showMoreButton" />
+        android:fontFamily="sans-serif-thin" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -64,12 +55,15 @@
         android:selectAllOnFocus="true"
         android:hint="@string/city_input"
         android:elevation="14dp"
+        android:textColor="#EFEBE9"
         android:layout_marginTop="86dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="57dp"
-        android:layout_marginStart="57dp" />
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:fontFamily="sans-serif-light"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/button"
@@ -82,5 +76,18 @@
         android:layout_alignBottom="@+id/cityInput"
         android:layout_toRightOf="@+id/cityInput"
         android:layout_toEndOf="@+id/cityInput" />
+
+    <TextView
+        android:text="SHOW MORE INFO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:textColor="#EFEBE9"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="14sp"
+        android:onClick="showMoreInfo"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp" />
 
 </RelativeLayout>

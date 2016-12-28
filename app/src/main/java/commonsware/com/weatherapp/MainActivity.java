@@ -44,16 +44,13 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> weatherInfoList = new ArrayList<>();
 
     public void showMoreInfo(View view){
-        Intent moreInfoIntent = new Intent(getApplicationContext(), moreInfoActivity.class);
-
-        ArrayList<String> dummyStringList = new ArrayList<>();
-        dummyStringList.add("first line");
-        dummyStringList.add("second line");
-        dummyStringList.add("third line");
-
-        moreInfoIntent.putStringArrayListExtra("moreInfo", weatherInfoList);
-
-        startActivity(moreInfoIntent);
+        if (weatherInfoList == null || weatherInfoList.size() == 0)
+            Toast.makeText(this, "Please enter a city name", Toast.LENGTH_SHORT).show();
+        else {
+            Intent moreInfoIntent = new Intent(getApplicationContext(), moreInfoActivity.class);
+            moreInfoIntent.putStringArrayListExtra("moreInfo", weatherInfoList);
+            startActivity(moreInfoIntent);
+        }
     }
     public void findWeather(View view){
         EditText cityInput = (EditText)findViewById(R.id.cityInput);
@@ -136,6 +133,10 @@ public class MainActivity extends AppCompatActivity {
                 String city = jsonObject.getString("name");
                 Log.i("City: ", city);
 
+                String countryInfo = jsonObject.getString("sys");
+                JSONObject countryObj = new JSONObject(countryInfo);
+                String country = countryObj.getString("country");
+                Log.i("Country: ", country );
 
                 //for (int i = 0; i < jsonArray.length(); i++){
                 for (int i = 0; i < 1; i++){
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     //weatherInfoList.add(main);
                     weatherInfoList.add(description);
                     if (!main.equals("") && !description.equals("")) {
-                        message += city + "\n$: " + description + "\n";
+                        message += city + ", " + country + "\n" + description + "\n";
                         int imageResourceName = 0;
                         if (mainDescription.containsKey(description))
                             imageResourceName = mainDescription.get(description);
@@ -166,10 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("TEMPERATURE: " , kelvinString);
                 celsiusValue = Double.parseDouble(kelvinString) - 273.15;
 
-                String countryInfo = jsonObject.getString("sys");
-                JSONObject countryObj = new JSONObject(countryInfo);
-                String country = countryObj.getString("country");
-                Log.i("Country: ", country );
+
 
                 String coordInfo = jsonObject.getString("coord");
                 JSONObject coordObj = new JSONObject(coordInfo);
